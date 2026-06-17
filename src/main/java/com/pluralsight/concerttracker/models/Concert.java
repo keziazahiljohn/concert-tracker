@@ -12,13 +12,13 @@ public class Concert {
     private double ticket_price;
     private int tickets_sold;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Artist artist;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Venue venue;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Promoter promoter;
 
     public Concert(){}
