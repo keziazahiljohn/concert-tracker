@@ -8,9 +8,9 @@ public class Concert {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private int concert_year;
-    private double ticket_price;
-    private int tickets_sold;
+    private int concertYear;
+    private double ticketPrice;
+    private int ticketsSold;
 
     @ManyToOne(optional = false)
     private Artist artist;
@@ -23,12 +23,68 @@ public class Concert {
 
     public Concert(){}
 
-    public Concert(int concert_year, double ticket_price, int tickets_sold, Artist artist, Venue venue, Promoter promoter) {
-        this.concert_year = concert_year;
-        this.ticket_price = ticket_price;
-        this.tickets_sold = tickets_sold;
+    public Concert(int concertYear, double ticketPrice, int ticketsSold, Artist artist, Venue venue, Promoter promoter) {
+        this.concertYear = concertYear;
+        this.ticketPrice = ticketPrice;
+        this.ticketsSold = this.ticketsSold;
         this.artist = artist;
         this.venue = venue;
+        this.promoter = promoter;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public int getConcertYear() {
+        return concertYear;
+    }
+
+    public void setConcertYear(int concertYear) {
+        this.concertYear = concertYear;
+    }
+
+    public double getTicketPrice() {
+        return ticketPrice;
+    }
+
+    public void setTicketPrice(double ticketPrice) {
+        this.ticketPrice = ticketPrice;
+    }
+
+    public int getTicketsSold() {
+        return ticketsSold;
+    }
+
+    public void setTicketsSold(int ticketsSold) {
+        this.ticketsSold = ticketsSold;
+    }
+
+    public Artist getArtist() {
+        return artist;
+    }
+
+    public void setArtist(Artist artist) {
+        this.artist = artist;
+    }
+
+    public Venue getVenue() {
+        return venue;
+    }
+
+    public void setVenue(Venue venue) {
+        this.venue = venue;
+    }
+
+    public Promoter getPromoter() {
+        return promoter;
+    }
+
+    public void setPromoter(Promoter promoter) {
         this.promoter = promoter;
     }
 }
