@@ -52,19 +52,19 @@ public class ConcertTrackerService {
 
     public Concert getConcertById(long id)
     {
-        return concertRepository.findById(id).orElseThrow(() -> new RuntimeException("Concert not found."));
+        return concertRepository.findById((int) id).orElseThrow(() -> new RuntimeException("Concert not found."));
     }
 
     public void addConcert(long artistId, long venueId, long promoterId, int year, double ticketPrice, int ticketsSold) {
-        Artist artist = artistRepository.findById(artistId)
+        Artist artist = artistRepository.findById((int) artistId)
                 .orElseThrow(() ->
                         new RuntimeException("Artist not found."));
 
-        Venue venue = venueRepository.findById(venueId)
+        Venue venue = venueRepository.findById((int) venueId)
                 .orElseThrow(() ->
                         new RuntimeException("Venue not found."));
 
-        Promoter promoter = promoterRepository.findById(promoterId)
+        Promoter promoter = promoterRepository.findById((int) promoterId)
                 .orElseThrow(() ->
                         new RuntimeException("Promoter not found."));
 
@@ -96,7 +96,7 @@ public class ConcertTrackerService {
 
     public void updateConcertPrice(long id, double price)
     {
-        Concert concert = concertRepository.findById(id)
+        Concert concert = concertRepository.findById((int) id)
                 .orElseThrow(() ->
                         new RuntimeException("Concert not found."));
 
@@ -113,7 +113,7 @@ public class ConcertTrackerService {
 
     public void updateTicketsSold(long id, int ticketsSold)
     {
-        Concert concert = concertRepository.findById(id)
+        Concert concert = concertRepository.findById((int) id)
                 .orElseThrow(() ->
                         new RuntimeException("Concert not found."));
 
@@ -136,13 +136,13 @@ public class ConcertTrackerService {
 
     public void deleteConcert(long id)
     {
-        if(!concertRepository.existsById(id))
+        if(!concertRepository.existsById((int) id))
         {
             throw new RuntimeException(
                     "Concert not found.");
         }
 
-        concertRepository.deleteById(id);
+        concertRepository.deleteById((int) id);
     }
 
     // Manage Artists
@@ -152,11 +152,11 @@ public class ConcertTrackerService {
     }
 
     public void deleteArtist(long id) {
-        artistRepository.deleteById(id);
+        artistRepository.deleteById((int) id);
     }
 
     public List<Artist> findArtistsByGenre(String genre) {
-        return artistRepository.findByGenreIgnoreCase(genre);
+        return artistRepository.findByGenre(genre);
     }
 
     public List<Artist> findArtistsByName(String name) {
@@ -171,7 +171,7 @@ public class ConcertTrackerService {
     }
 
     public void deletePromoter(long id) {
-        promoterRepository.deleteById(id);
+        promoterRepository.deleteById((int) id);
     }
 
     public List<Promoter> findPromotersByName(String name) {
@@ -185,7 +185,7 @@ public class ConcertTrackerService {
     }
 
     public void deleteVenue(long id) {
-        venueRepository.deleteById(id);
+        venueRepository.deleteById((int) id);
     }
 
     public List<Venue> findVenueByCity(String city) {
@@ -204,6 +204,39 @@ public class ConcertTrackerService {
 
 
 
+
+    public List<Concert> findConcertsByYear(int year){
+        return concertRepository.findByYear(year);
+    }
+
+    public List<Concert> findConcertsByArtist(String name){
+        return concertRepository.findByArtistName(name);
+    }
+
+
+    public List<Concert> findConcertsByVenue(String name){
+        return concertRepository.findByVenueName(name);
+    }
+
+
+    public List<Concert> findConcertsByCity(String city){
+        return concertRepository.findByCity(city);
+    }
+
+
+    public List<Concert> findConcertsByMaximumPrice(double price){
+        return concertRepository.findByMaximumPrice(price);
+    }
+
+
+    public List<Concert> findConcertsByPriceRange(double min, double max){
+        return concertRepository.findByPriceRange(min, max);
+    }
+
+
+    public List<Concert> findConcertsByPriceAndYear(double price, int year){
+        return concertRepository.findByPriceAndYear(price, year);
+    }
 
 
 

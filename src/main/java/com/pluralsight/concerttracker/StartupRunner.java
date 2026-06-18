@@ -8,6 +8,7 @@ import com.pluralsight.concerttracker.services.ConcertTrackerService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Scanner;
 
 @Component
@@ -30,10 +31,13 @@ public class StartupRunner implements CommandLineRunner {
 
             try {
                 switch (scanner.nextInt()) {
-                    case 1 -> concertMenu(scanner);
-                    case 2 -> artistMenu(scanner);
-                    case 3 -> venueMenu(scanner);
-                    case 4 -> promoterMenu(scanner);
+                    case 1 -> listConcerts();
+                    case 2 -> viewConcertById(scanner);
+                    case 3 -> addConcert(scanner);
+                    case 4 -> updatePrice(scanner);
+                    case 5 -> updateTicketsSold(scanner);
+                    case 6 -> deleteConcert(scanner);
+                    case 7 -> searchConcerts(scanner);
                     case 0 -> running = false;
                     default -> System.out.println("Unknown option.");
                 }
@@ -51,6 +55,7 @@ public class StartupRunner implements CommandLineRunner {
         System.out.println("4) Update Ticket Price");
         System.out.println("5) Update Tickets Sold");
         System.out.println("6) Delete Concert");
+        System.out.println("7) Search Concerts");
         System.out.println("0) Quit");
         System.out.print("Choose: ");
     }
@@ -274,7 +279,9 @@ public class StartupRunner implements CommandLineRunner {
                 case 0 -> running = false;
             }
         }
-    }private void promoterMenu(Scanner scanner)
+    }
+
+    private void promoterMenu(Scanner scanner)
     {
         boolean running = true;
 
@@ -337,6 +344,50 @@ public class StartupRunner implements CommandLineRunner {
 
                 case 0 -> running = false;
             }
+        }
+    }
+
+    private void searchConcerts(Scanner scanner){
+
+        System.out.println("\n=== Search Concerts ===");
+        System.out.println("1) By Year");
+        System.out.println("2) By Artist");
+        System.out.println("3) By Venue");
+        System.out.println("4) By City");
+        System.out.println("5) By Maximum Price");
+        System.out.println("6) By Price Range");
+        System.out.println("7) By Price and Year");
+
+        int choice = scanner.nextInt();
+
+        switch(choice){
+
+            case 1 -> {
+                System.out.print("Year: ");
+                int year = scanner.nextInt();
+
+                printConcertResults(
+                        concertService.findConcertsByYear(year)
+                );
+            }
+
+        }
+    }
+
+    private void printConcertResults(List<Concert> concerts){
+
+        if(concerts.isEmpty()){
+            System.out.println("No concerts found.");
+            return;
+        }
+
+        for(Concert concert : concerts){
+
+            System.out.println(
+                    concert.getArtist().getName()
+                            + " at "
+                            + concert.getVenue().getName()
+            );
         }
     }
 
