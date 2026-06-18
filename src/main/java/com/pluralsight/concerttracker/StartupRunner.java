@@ -1,15 +1,15 @@
 package com.pluralsight.concerttracker;
 
-import com.pluralsight.concerttracker.services.ConcertService;
+import com.pluralsight.concerttracker.services.ConcertTrackerService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 @Component
 public class StartupRunner implements CommandLineRunner {
 
-    private final ConcertService concertService;
+    private final ConcertTrackerService concertService;
 
-    public StartupRunner(ConcertService concertService) {
+    public StartupRunner(ConcertTrackerService concertService) {
         this.concertService = concertService;
     }
 
