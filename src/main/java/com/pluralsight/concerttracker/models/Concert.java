@@ -26,7 +26,7 @@ public class Concert {
     public Concert(int concertYear, double ticketPrice, int ticketsSold, Artist artist, Venue venue, Promoter promoter) {
         this.concertYear = concertYear;
         this.ticketPrice = ticketPrice;
-        this.ticketsSold = this.ticketsSold;
+        this.ticketsSold = ticketsSold;
         this.artist = artist;
         this.venue = venue;
         this.promoter = promoter;

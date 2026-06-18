@@ -30,9 +30,183 @@ public class ConcertTrackerService {
         this.venueRepository = venueRepository;
     }
 
+    // Get All
+
     public List<Concert> getAllConcerts() {
         return concertRepository.findAll();
     }
+
+    public List<Artist> getAllArtists(){
+        return artistRepository.findAll();
+    }
+
+    public List<Promoter> getAllPromoters() {
+        return promoterRepository.findAll();
+    }
+
+    public List<Venue> getAllVenues() {
+        return venueRepository.findAll();
+    }
+
+    // Manage Concerts
+
+    public Concert getConcertById(long id)
+    {
+        return concertRepository.findById(id).orElseThrow(() -> new RuntimeException("Concert not found."));
+    }
+
+    public void addConcert(long artistId, long venueId, long promoterId, int year, double ticketPrice, int ticketsSold) {
+        Artist artist = artistRepository.findById(artistId)
+                .orElseThrow(() ->
+                        new RuntimeException("Artist not found."));
+
+        Venue venue = venueRepository.findById(venueId)
+                .orElseThrow(() ->
+                        new RuntimeException("Venue not found."));
+
+        Promoter promoter = promoterRepository.findById(promoterId)
+                .orElseThrow(() ->
+                        new RuntimeException("Promoter not found."));
+
+        if(ticketPrice < 0) {
+            throw new RuntimeException(
+                    "Ticket price cannot be negative.");
+        }
+
+        if(ticketsSold < 0) {
+            throw new RuntimeException(
+                    "Tickets sold cannot be negative.");
+        }
+
+        if(ticketsSold > venue.getCapacity()) {
+            throw new RuntimeException(
+                    "Tickets sold exceeds venue capacity.");
+        }
+
+        Concert concert = new Concert(
+                year,
+                ticketPrice,
+                ticketsSold,
+                artist,
+                venue,
+                promoter);
+
+        concertRepository.save(concert);
+    }
+
+    public void updateConcertPrice(long id, double price)
+    {
+        Concert concert = concertRepository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException("Concert not found."));
+
+        if(price < 0)
+        {
+            throw new RuntimeException(
+                    "Price cannot be negative.");
+        }
+
+        concert.setTicketPrice(price);
+
+        concertRepository.save(concert);
+    }
+
+    public void updateTicketsSold(long id, int ticketsSold)
+    {
+        Concert concert = concertRepository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException("Concert not found."));
+
+        if(ticketsSold < 0)
+        {
+            throw new RuntimeException(
+                    "Tickets sold cannot be negative.");
+        }
+
+        if(ticketsSold > concert.getVenue().getCapacity())
+        {
+            throw new RuntimeException(
+                    "Tickets sold exceeds venue capacity.");
+        }
+
+        concert.setTicketsSold(ticketsSold);
+
+        concertRepository.save(concert);
+    }
+
+    public void deleteConcert(long id)
+    {
+        if(!concertRepository.existsById(id))
+        {
+            throw new RuntimeException(
+                    "Concert not found.");
+        }
+
+        concertRepository.deleteById(id);
+    }
+
+    // Manage Artists
+
+    public void addArtist(String name, String genre) {
+        artistRepository.save(new Artist(name, genre));
+    }
+
+    public void deleteArtist(long id) {
+        artistRepository.deleteById(id);
+    }
+
+    public List<Artist> findArtistsByGenre(String genre) {
+        return artistRepository.findByGenreIgnoreCase(genre);
+    }
+
+    public List<Artist> findArtistsByName(String name) {
+        return artistRepository.findByNameContainingIgnoreCase(name);
+    }
+
+    // Manage Promoters
+
+    public void addPromoter(String name) {
+        promoterRepository.save(
+                new Promoter(name));
+    }
+
+    public void deletePromoter(long id) {
+        promoterRepository.deleteById(id);
+    }
+
+    public List<Promoter> findPromotersByName(String name) {
+        return promoterRepository
+                .findByNameContainingIgnoreCase(name);
+    }
+
+    // Manage Venues
+    public void addVenue(String name, String city, int capacity) {
+        venueRepository.save(new Venue(name, city, capacity));
+    }
+
+    public void deleteVenue(long id) {
+        venueRepository.deleteById(id);
+    }
+
+    public List<Venue> findVenueByCity(String city) {
+        return venueRepository.findByCityIgnoreCase(city);
+    }
+
+    public List<Venue> findVenueByName(String name) {
+        return venueRepository
+                .findByNameContainingIgnoreCase(name);
+    }
+
+    public List<Venue> findVenueByMinimumCapacity(int capacity) {
+        return venueRepository
+                .findByCapacityGreaterThanEqual(capacity);
+    }
+
+
+
+
+
+
 
     public void seedIfEmpty() {
         if (concertRepository.count() > 0) {
